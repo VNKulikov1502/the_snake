@@ -90,6 +90,7 @@ class Snake(GameObject):
 
     def __init__(self):
         self.last = None
+        self.position = [(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2)]
 
     def update_direction(self):
         """Метод изменяет направление движения змейки."""
