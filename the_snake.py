@@ -21,6 +21,10 @@ RIGHT: tuple[int, int] = (1, 0)
 # Цвета фона - черный
 BOARD_BACKGROUND_COLOR: tuple[int, int, int] = (0, 0, 0)
 
+# Цвета для объектов
+GREEN_COLOR: tuple[int, int, int] = (0, 255, 0)
+RED_COLOR: tuple[int, int, int] = (255, 0, 0)
+BROWN_COLOR: tuple[int, int, int] = (139, 69, 19)
 # Скорость движения змейки
 SPEED: int = 20
 
@@ -41,7 +45,8 @@ class GameObject():
 
     def __init__(self, body_color=None):
         self.position = ((SCREEN_WIDTH // 2), (SCREEN_HEIGHT // 2))
-        super().__init__(body_color)
+        self.body_color = body_color
+        super().__init__()
 
     def draw(self):
         """Абстрактный метод для наследования в дочерних классах."""
@@ -56,10 +61,10 @@ class Snake(GameObject):
     direction = RIGHT
     next_direction = None
 
-    def __init__(self):
+    def __init__(self, body_color=GREEN_COLOR):
+        super().__init__(body_color)
         self.last = None
         self.position = [(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2)]
-        self.body_color = (0, 255, 0)
 
     def update_direction(self):
         """Метод изменяет направление движения змейки."""
@@ -161,10 +166,10 @@ class Apple(GameObject):
                                  (randint(1, 23) * GRID_SIZE))
         return self.position
 
-    def __init__(self, snake=Snake):
+    def __init__(self, snake=Snake, body_color=RED_COLOR):
+        super().__init__(body_color)
         self.position = self.randomize_position(snake)
-        self.body_color = (255, 0, 0)
-        self.snake_pos = Snake.positions
+        self.snake_pos = snake.positions
 
     def draw(self, surface):
         """Метод для отрисовки яблока."""
@@ -188,9 +193,9 @@ class Apple(GameObject):
 class Junkfood(Apple):
     """Класс, описывающий неправильную еду."""
 
-    def __init__(self, snake=Snake):
+    def __init__(self, snake=Snake, body_color=BROWN_COLOR):
+        self.body_color = body_color
         self.position = self.randomize_position(snake)
-        self.body_color = (139, 69, 19)
 
 
 def handle_keys(game_object):
